@@ -1,73 +1,195 @@
-# Welcome to your Lovable project
+# ChatGPT-like AI Interface
 
-## Project info
+A beautiful, modern ChatGPT-like interface built with React, TypeScript, and Tailwind CSS. Features dark/light mode, configurable backends (Ollama/LM Studio), and a stunning design that surpasses the original ChatGPT interface.
 
-**URL**: https://lovable.dev/projects/50c5f063-11f2-4d83-bac4-4e3f35bd2050
+## 🚀 Features
 
-## How can I edit this code?
+- **Beautiful UI**: Modern, responsive design with smooth animations
+- **Dark/Light Mode**: Persistent theme switching with localStorage
+- **Multiple Backends**: Support for Ollama and LM Studio
+- **Web Search Toggle**: Enable/disable web search for queries
+- **Conversation Management**: Sidebar with conversation history
+- **Real-time Chat**: Smooth message bubbles with typing indicators
+- **Configuration Panel**: Easy backend and port configuration
 
-There are several ways of editing your application.
+## 🛠 Tech Stack
 
-**Use Lovable**
+- **Frontend**: React 18 + TypeScript + Vite
+- **Styling**: Tailwind CSS + ShadCN UI
+- **State**: React Hooks + localStorage
+- **Icons**: Lucide React
+- **Routing**: React Router DOM
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/50c5f063-11f2-4d83-bac4-4e3f35bd2050) and start prompting.
+## 🔧 Installation & Setup
 
-Changes made via Lovable will be committed automatically to this repo.
+1. **Clone and install dependencies:**
+```bash
+git clone <your-repo-url>
+cd chatgpt-interface
+npm install
+```
 
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+2. **Start development server:**
+```bash
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+3. **Build for production:**
+```bash
+npm run build
+```
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## 🎯 Backend Integration
 
-**Use GitHub Codespaces**
+The interface is designed to work with local AI backends. Here's what the backend needs to implement:
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+### Expected API Endpoints
 
-## What technologies are used for this project?
+#### 1. Chat Completion Endpoint
+- **Ollama**: `POST http://localhost:11434/api/chat`
+- **LM Studio**: `POST http://localhost:1234/v1/chat/completions`
 
-This project is built with:
+#### 2. Request Payload Structure
+The frontend sends this payload when a user submits a message:
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+```json
+{
+  "query": "User's message text",
+  "webSearchEnabled": true,
+  "backend": {
+    "type": "ollama",
+    "port": 11434
+  }
+}
+```
 
-## How can I deploy this project?
+#### 3. Expected Response Format
 
-Simply open [Lovable](https://lovable.dev/projects/50c5f063-11f2-4d83-bac4-4e3f35bd2050) and click on Share -> Publish.
+**For Ollama:**
+```json
+{
+  "message": {
+    "role": "assistant",
+    "content": "AI response here"
+  },
+  "done": true
+}
+```
 
-## Can I connect a custom domain to my Lovable project?
+**For LM Studio (OpenAI compatible):**
+```json
+{
+  "choices": [{
+    "message": {
+      "role": "assistant", 
+      "content": "AI response here"
+    }
+  }]
+}
+```
 
-Yes, you can!
+### Backend Implementation Guide
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+#### For Ollama Integration:
+1. Install Ollama: https://ollama.ai
+2. Pull a model: `ollama pull llama2`
+3. Start server: `ollama serve` (default port 11434)
+4. Your API endpoint: `POST /api/chat`
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+#### For LM Studio Integration:
+1. Download LM Studio: https://lmstudio.ai
+2. Load a model in LM Studio
+3. Start local server (default port 1234)
+4. Your API endpoint: `POST /v1/chat/completions`
+
+### Web Search Integration
+When `webSearchEnabled: true` in the payload:
+- Backend should perform web search before generating response
+- Include search results in the context
+- Cite sources in the response if applicable
+
+## 🎨 Configuration
+
+### Theme Persistence
+Themes are automatically saved to localStorage:
+- Key: `theme`
+- Values: `"light"` | `"dark"`
+
+### Backend Configuration
+Backend settings are saved to localStorage:
+- Key: `backendConfig`
+- Structure:
+```json
+{
+  "type": "ollama",
+  "port": 11434
+}
+```
+
+## 🔗 API Integration Points
+
+### Frontend → Backend Flow:
+1. User types message and hits send
+2. Frontend logs the payload structure to console
+3. Frontend sends payload to configured backend endpoint
+4. Backend processes request (with optional web search)
+5. Backend returns response
+6. Frontend displays response in chat
+
+### Error Handling:
+The frontend expects standard HTTP status codes:
+- `200`: Success
+- `400`: Bad Request
+- `500`: Server Error
+
+## 🚀 Deployment
+
+### Bolt.new Deployment:
+1. Copy this codebase to Bolt.new
+2. Run `npm run dev`
+3. Configure your backend URL in the settings
+
+### Replit Deployment:
+1. Fork repository to Replit
+2. Run `npm install && npm run dev`
+3. Set up backend configuration
+
+### Vercel/Netlify:
+1. Connect your repository
+2. Build command: `npm run build`
+3. Output directory: `dist`
+
+## 🔧 Development Notes
+
+### Adding New Features:
+- All components use the design system from `src/index.css`
+- Use semantic color tokens instead of hardcoded colors
+- Follow the existing component structure in `src/components/`
+
+### Backend Testing:
+Currently, the interface logs payloads to console for development. To test with a real backend:
+1. Set up Ollama or LM Studio
+2. Update the `handleSendMessage` function in `ChatWindow.tsx`
+3. Replace `console.log` with actual API calls
+
+### Styling Guidelines:
+- Use design system colors defined in `index.css`
+- Maintain consistent spacing and typography
+- Ensure dark/light mode compatibility
+- Use smooth transitions for better UX
+
+## 📝 License
+
+MIT License - feel free to use this in your projects!
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Test thoroughly
+5. Submit a pull request
+
+---
+
+**Note**: This is a frontend-only implementation. You'll need to set up your chosen backend (Ollama/LM Studio) separately and implement the API endpoints as described above.
