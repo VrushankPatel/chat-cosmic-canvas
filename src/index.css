@@ -17,7 +17,7 @@
     
     /* Chat Interface */
     --chat-background: 0 0% 98%;
-    --user-message: 142 76% 36%;     /* Deep Green #2ecc71 */
+    --user-message: var(--primary);
     --user-message-foreground: 0 0% 100%;
     --assistant-message: 0 0% 100%;
     --assistant-message-foreground: 0 0% 9%;
@@ -29,7 +29,7 @@
     --sidebar-border: 0 0% 90% / 0.5;
     
     /* Interactive Elements */
-    --primary: 142 76% 36%;          /* Emerald Green */
+    --primary: 142 76% 36%;          /* Default Emerald Green */
     --primary-foreground: 0 0% 100%;
     --secondary: 240 5% 94%;
     --secondary-foreground: 0 0% 9%;
@@ -40,10 +40,10 @@
     --border: 0 0% 90%;
     --input: 0 0% 100%;
     --input-border: 0 0% 88%;
-    --ring: 142 76% 36%;
+    --ring: var(--primary);
     
     /* Status & Feedback */
-    --success: 142 76% 36%;
+    --success: var(--primary);
     --success-foreground: 0 0% 100%;
     --warning: 35 91% 50%;
     --warning-foreground: 0 0% 100%;
@@ -80,7 +80,7 @@
     
     /* Chat Interface */
     --chat-background: 0 0% 7%;
-    --user-message: 142 76% 45%;     /* Brighter emerald for dark mode */
+    --user-message: var(--primary);
     --user-message-foreground: 0 0% 100%;
     --assistant-message: 0 0% 15%;
     --assistant-message-foreground: 0 0% 95%;
@@ -92,7 +92,7 @@
     --sidebar-border: 0 0% 25% / 0.5;
     
     /* Interactive Elements */
-    --primary: 142 76% 45%;          /* Emerald Green - brighter for dark */
+    --primary: 142 76% 45%;          /* Default Emerald Green - brighter for dark */
     --primary-foreground: 0 0% 100%;
     --secondary: 0 0% 15%;
     --secondary-foreground: 0 0% 95%;
@@ -103,10 +103,10 @@
     --border: 0 0% 25%;
     --input: 0 0% 15%;
     --input-border: 0 0% 30%;
-    --ring: 142 76% 45%;
+    --ring: var(--primary);
     
     /* Status & Feedback */
-    --success: 142 76% 45%;
+    --success: var(--primary);
     --success-foreground: 0 0% 100%;
     --warning: 35 91% 55%;
     --warning-foreground: 0 0% 100%;
@@ -127,6 +127,55 @@
     --glass-bg: 0 0% 15% / 0.7;
     --glass-border: 0 0% 25% / 0.2;
     --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.6);
+  }
+
+  /* Accent Color Themes */
+  [data-accent="emerald"] {
+    --primary: 142 76% 36%;
+  }
+  
+  [data-accent="emerald"].dark {
+    --primary: 142 76% 45%;
+  }
+
+  [data-accent="blue"] {
+    --primary: 221 83% 53%;
+  }
+  
+  [data-accent="blue"].dark {
+    --primary: 221 83% 58%;
+  }
+
+  [data-accent="purple"] {
+    --primary: 262 83% 58%;
+  }
+  
+  [data-accent="purple"].dark {
+    --primary: 262 83% 63%;
+  }
+
+  [data-accent="amber"] {
+    --primary: 43 96% 56%;
+  }
+  
+  [data-accent="amber"].dark {
+    --primary: 43 96% 61%;
+  }
+
+  [data-accent="rose"] {
+    --primary: 346 77% 49%;
+  }
+  
+  [data-accent="rose"].dark {
+    --primary: 346 77% 54%;
+  }
+
+  [data-accent="indigo"] {
+    --primary: 239 84% 67%;
+  }
+  
+  [data-accent="indigo"].dark {
+    --primary: 239 84% 72%;
   }
 }
 

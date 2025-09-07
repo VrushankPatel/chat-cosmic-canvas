@@ -7,10 +7,12 @@ import { ConfigPanel } from './ConfigPanel';
 import { Settings } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { BifrostIcon } from './BifrostIcon';
+import { useAppConfig } from '@/hooks/useAppConfig';
 
 export const AppShell: React.FC = () => {
   const [isConfigOpen, setIsConfigOpen] = useState(false);
   const [isDark, setIsDark] = useState(true); // Dark mode as default
+  const { config } = useAppConfig();
 
   useEffect(() => {
     // Check for saved theme or default to dark
@@ -22,7 +24,15 @@ export const AppShell: React.FC = () => {
       setIsDark(true);
       document.documentElement.classList.add('dark');
     }
+
+    // Apply accent color theme
+    document.documentElement.setAttribute('data-accent', config.theme.accentColor);
   }, []);
+
+  useEffect(() => {
+    // Update accent color when config changes
+    document.documentElement.setAttribute('data-accent', config.theme.accentColor);
+  }, [config.theme.accentColor]);
 
   return (
     <motion.div 

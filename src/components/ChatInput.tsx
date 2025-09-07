@@ -1,8 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Send, Paperclip, Square } from 'lucide-react';
+import { Send, Paperclip, Square, Globe } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
+import { Switch } from '@/components/ui/switch';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { useAppConfig } from '@/hooks/useAppConfig';
 
 interface ChatInputProps {
   onSendMessage: (message: string) => void;
@@ -12,6 +15,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage }) => {
   const [message, setMessage] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const { config, toggleWebSearch } = useAppConfig();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -78,6 +82,23 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage }) => {
           className="min-h-[44px] max-h-[200px] resize-none border-0 bg-transparent p-0 text-sm placeholder:text-muted-foreground focus-visible:ring-0 focus-visible:ring-offset-0 font-medium"
           rows={1}
         />
+
+        {/* Web Search Toggle */}
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <div className="flex items-center gap-2 px-2 py-1 rounded-lg hover:bg-muted/40 transition-colors">
+              <Globe className="h-4 w-4 text-muted-foreground" />
+              <Switch
+                checked={config.webSearchEnabled}
+                onCheckedChange={toggleWebSearch}
+                className="scale-75"
+              />
+            </div>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Web Search {config.webSearchEnabled ? 'Enabled' : 'Disabled'}</p>
+          </TooltipContent>
+        </Tooltip>
 
         {/* Send/Stop Button */}
         {isGenerating ? (

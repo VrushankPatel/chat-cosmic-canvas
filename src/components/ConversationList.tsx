@@ -1,43 +1,27 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Plus, MessageSquare, MoreHorizontal } from 'lucide-react';
+import { Plus, MessageSquare, MoreHorizontal, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
-
-interface Conversation {
-  id: string;
-  title: string;
-  timestamp: string;
-  preview: string;
-}
+import { useConversations } from '@/hooks/useConversations';
 
 export const ConversationList: React.FC = () => {
-  const [activeConversation, setActiveConversation] = useState<string>('1');
-  
-  // Mock conversations
-  const conversations: Conversation[] = [
-    {
-      id: '1',
-      title: 'Neural Architecture Design',
-      timestamp: '2 hours ago',
-      preview: 'Discussing optimal transformer architectures...'
-    },
-    {
-      id: '2',
-      title: 'Data Pipeline Optimization',
-      timestamp: '1 day ago',
-      preview: 'How to streamline ETL processes for ML...'
-    },
-    {
-      id: '3',
-      title: 'API Integration Strategy',
-      timestamp: '3 days ago',
-      preview: 'Best practices for microservices architecture...'
-    }
-  ];
+  const {
+    conversations,
+    activeConversationId,
+    createConversation,
+    deleteConversation,
+    switchConversation
+  } = useConversations();
 
-  const handleNewConversation = () => {
-    console.log('Creating new conversation...');
+  const handleNewConversation = async () => {
+    await createConversation();
+  };
+
+  const handleDeleteConversation = async (conversationId: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    await deleteConversation(conversationId);
   };
 
   return (
@@ -67,11 +51,11 @@ export const ConversationList: React.FC = () => {
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.4 + index * 0.1, duration: 0.3 }}
-              onClick={() => setActiveConversation(conversation.id)}
+              onClick={() => switchConversation(conversation.id)}
               className={cn(
                 "group flex items-start gap-3 p-4 rounded-2xl cursor-pointer transition-all duration-200",
                 "hover:bg-sidebar-surface/60 glass-subtle",
-                activeConversation === conversation.id 
+                activeConversationId === conversation.id 
                   ? "bg-sidebar-surface/80 border border-primary/20 shadow-sm" 
                   : ""
               )}
@@ -82,13 +66,27 @@ export const ConversationList: React.FC = () => {
                   <h3 className="text-sm font-semibold text-sidebar-foreground truncate">
                     {conversation.title}
                   </h3>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="opacity-0 group-hover:opacity-100 h-6 w-6 p-0 hover:bg-muted/60 transition-all duration-200"
-                  >
-                    <MoreHorizontal className="h-3 w-3" />
-                  </Button>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="opacity-0 group-hover:opacity-100 h-6 w-6 p-0 hover:bg-muted/60 transition-all duration-200"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <MoreHorizontal className="h-3 w-3" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-48">
+                      <DropdownMenuItem
+                        onClick={(e) => handleDeleteConversation(conversation.id, e)}
+                        className="text-destructive focus:text-destructive"
+                      >
+                        <Trash2 className="h-4 w-4 mr-2" />
+                        Delete Conversation
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </div>
                 <p className="text-xs text-muted-foreground truncate mt-1 font-medium">
                   {conversation.preview}
