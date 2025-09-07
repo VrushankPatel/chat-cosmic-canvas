@@ -1,24 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Moon, Sun } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
-export const ThemeToggle: React.FC = () => {
-  const [isDark, setIsDark] = useState(false);
+interface ThemeToggleProps {
+  isDark: boolean;
+  setIsDark: (isDark: boolean) => void;
+}
 
-  useEffect(() => {
-    // Check for saved theme or default to light
-    const savedTheme = localStorage.getItem('theme');
-    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    
-    if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
-      setIsDark(true);
-      document.documentElement.classList.add('dark');
-    } else {
-      setIsDark(false);
-      document.documentElement.classList.remove('dark');
-    }
-  }, []);
-
+export const ThemeToggle: React.FC<ThemeToggleProps> = ({ isDark, setIsDark }) => {
   const toggleTheme = () => {
     const newTheme = !isDark;
     setIsDark(newTheme);
@@ -37,7 +26,7 @@ export const ThemeToggle: React.FC = () => {
       variant="ghost"
       size="sm"
       onClick={toggleTheme}
-      className="text-sidebar-foreground hover:bg-sidebar-surface transition-smooth"
+      className="text-sidebar-foreground hover:bg-sidebar-surface/60 transition-all duration-200"
     >
       {isDark ? (
         <Sun className="h-4 w-4" />

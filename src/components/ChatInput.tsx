@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { Send, Paperclip, Square } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -20,7 +21,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage }) => {
       setMessage('');
       
       // Reset generating state after a delay (simulate processing)
-      setTimeout(() => setIsGenerating(false), 2000);
+      setTimeout(() => setIsGenerating(false), 2500);
     }
   };
 
@@ -45,14 +46,23 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage }) => {
   }, [message]);
 
   return (
-    <form onSubmit={handleSubmit} className="relative">
-      <div className="relative flex items-end gap-3 p-3 bg-background border border-input-border rounded-2xl shadow-sm focus-within:ring-2 focus-within:ring-ring focus-within:border-transparent transition-smooth">
+    <motion.form 
+      onSubmit={handleSubmit} 
+      className="relative"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+    >
+      <motion.div 
+        className="relative flex items-end gap-4 p-4 bg-surface-elevated/80 backdrop-blur-xl border border-border/50 rounded-3xl shadow-lg glass-subtle focus-within:ring-2 focus-within:ring-primary/20 focus-within:border-primary/30 transition-all duration-300"
+        whileFocus={{ scale: 1.01 }}
+      >
         {/* Attachment Button */}
         <Button
           type="button"
           variant="ghost"
           size="sm"
-          className="text-muted-foreground hover:text-foreground p-2"
+          className="text-muted-foreground hover:text-foreground p-2 hover:bg-muted/60 transition-all duration-200"
         >
           <Paperclip className="h-4 w-4" />
         </Button>
@@ -63,45 +73,58 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage }) => {
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder={isGenerating ? "AI is thinking..." : "Ask me anything..."}
+          placeholder={isGenerating ? "Bifrost is thinking..." : "Ask Bifrost anything..."}
           disabled={isGenerating}
-          className="min-h-[40px] max-h-[200px] resize-none border-0 bg-transparent p-0 text-sm placeholder:text-muted-foreground focus-visible:ring-0 focus-visible:ring-offset-0"
+          className="min-h-[44px] max-h-[200px] resize-none border-0 bg-transparent p-0 text-sm placeholder:text-muted-foreground focus-visible:ring-0 focus-visible:ring-offset-0 font-medium"
           rows={1}
         />
 
         {/* Send/Stop Button */}
         {isGenerating ? (
-          <Button
-            type="button"
-            onClick={handleStop}
-            size="sm"
-            variant="secondary"
-            className="rounded-xl px-3 py-2 h-8"
+          <motion.div
+            initial={{ scale: 0.8 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 0.2 }}
           >
-            <Square className="h-3 w-3 mr-1" />
-            Stop
-          </Button>
+            <Button
+              type="button"
+              onClick={handleStop}
+              size="sm"
+              variant="secondary"
+              className="rounded-2xl px-4 py-2 h-10 shadow-sm"
+            >
+              <Square className="h-3 w-3 mr-2" />
+              Stop
+            </Button>
+          </motion.div>
         ) : (
-          <Button
-            type="submit"
-            disabled={!message.trim()}
-            size="sm"
-            className="rounded-xl px-3 py-2 h-8 bg-primary hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-smooth"
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
-            <Send className="h-3 w-3" />
-          </Button>
+            <Button
+              type="submit"
+              disabled={!message.trim()}
+              size="sm"
+              className="rounded-2xl px-4 py-2 h-10 bg-primary hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-sm font-medium"
+            >
+              <Send className="h-4 w-4" />
+            </Button>
+          </motion.div>
+        )}
+      </motion.div>
+      
+      {/* Tips */}
+      <div className="flex justify-between items-center mt-3 px-2">
+        <p className="text-xs text-muted-foreground/80 font-medium">
+          Press <kbd className="px-2 py-1 text-xs font-semibold bg-muted/60 rounded-md border border-border/50">Enter</kbd> to send, <kbd className="px-2 py-1 text-xs font-semibold bg-muted/60 rounded-md border border-border/50">Shift + Enter</kbd> for new line
+        </p>
+        {message.length > 0 && (
+          <p className="text-xs text-muted-foreground/60 font-medium">
+            {message.length} characters
+          </p>
         )}
       </div>
-      
-      {/* Character count or tips */}
-      <div className="flex justify-between items-center mt-2 px-1">
-        <p className="text-xs text-muted-foreground">
-          Press <kbd className="px-1 py-0.5 text-xs font-semibold bg-muted rounded">Enter</kbd> to send, <kbd className="px-1 py-0.5 text-xs font-semibold bg-muted rounded">Shift + Enter</kbd> for new line
-        </p>
-        <p className="text-xs text-muted-foreground">
-          {message.length > 0 && `${message.length} characters`}
-        </p>
-      </div>
-    </form>
+    </motion.form>
   );
 };

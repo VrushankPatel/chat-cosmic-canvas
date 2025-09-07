@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { MessageBubble } from './MessageBubble';
 import { ChatInput } from './ChatInput';
 import { SearchToggle } from './SearchToggle';
@@ -14,7 +15,7 @@ export const ChatWindow: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      content: 'Hello! I\'m your AI assistant. I can help you with a wide range of topics. How can I assist you today?',
+      content: 'Welcome to Bifrost! I\'m your professional AI assistant, ready to help with any questions or tasks. How can I assist you today?',
       role: 'assistant',
       timestamp: new Date()
     }
@@ -33,9 +34,9 @@ export const ChatWindow: React.FC = () => {
       backend: backendConfig
     };
     
-    console.log('Message payload:', payload);
+    console.log('Query received:', payload);
     
-    // Add user message
+    // Add user message with animation
     const userMessage: Message = {
       id: Date.now().toString(),
       content,
@@ -45,40 +46,56 @@ export const ChatWindow: React.FC = () => {
     
     setMessages(prev => [...prev, userMessage]);
     
-    // Simulate assistant response
+    // Simulate assistant response with delay
     setTimeout(() => {
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
-        content: `I received your message: "${content}". This is a demo response. In the actual implementation, this would be processed by the ${backendConfig.type} backend running on port ${backendConfig.port}.${webSearchEnabled ? ' Web search was enabled for this query.' : ''}`,
+        content: `Query received and processed through Bifrost. Your message: "${content}" has been analyzed using ${backendConfig.type} backend on port ${backendConfig.port}.${webSearchEnabled ? ' Web search capabilities were enabled for enhanced context.' : ' This query was processed locally without web search.'}`,
         role: 'assistant',
         timestamp: new Date()
       };
       setMessages(prev => [...prev, assistantMessage]);
-    }, 1000);
+    }, 1200);
   };
 
   return (
     <div className="flex flex-col h-full bg-chat-background">
       {/* Messages Area */}
       <div className="flex-1 overflow-y-auto p-6 space-y-6">
-        {messages.map((message) => (
-          <MessageBubble
-            key={message.id}
-            message={message}
-          />
-        ))}
+        <AnimatePresence initial={false}>
+          {messages.map((message, index) => (
+            <motion.div
+              key={message.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ 
+                duration: 0.4, 
+                delay: index === messages.length - 1 ? 0.2 : 0,
+                ease: "easeOut"
+              }}
+            >
+              <MessageBubble message={message} />
+            </motion.div>
+          ))}
+        </AnimatePresence>
       </div>
 
-      {/* Input Area */}
-      <div className="border-t border-border bg-chat-surface p-4">
-        <div className="max-w-4xl mx-auto space-y-3">
+      {/* Input Area with Glass Effect */}
+      <motion.div 
+        className="border-t border-border/50 bg-surface/50 backdrop-blur-xl p-6"
+        initial={{ y: 100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.4, ease: "easeOut" }}
+      >
+        <div className="max-w-4xl mx-auto space-y-4">
           <SearchToggle
             enabled={webSearchEnabled}
             onToggle={setWebSearchEnabled}
           />
           <ChatInput onSendMessage={handleSendMessage} />
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };

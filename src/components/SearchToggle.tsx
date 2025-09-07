@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { Search, Globe } from 'lucide-react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
@@ -10,29 +11,44 @@ interface SearchToggleProps {
 
 export const SearchToggle: React.FC<SearchToggleProps> = ({ enabled, onToggle }) => {
   return (
-    <div className="flex items-center space-x-3 p-3 bg-muted/30 rounded-lg border border-muted">
-      <div className="flex items-center space-x-2">
-        <Globe className="h-4 w-4 text-primary" />
-        <Checkbox
-          id="web-search"
-          checked={enabled}
-          onCheckedChange={onToggle}
-          className="data-[state=checked]:bg-primary data-[state=checked]:border-primary"
-        />
-        <Label 
-          htmlFor="web-search" 
-          className="text-sm font-medium cursor-pointer select-none"
-        >
-          Enable Web Search
-        </Label>
+    <motion.div 
+      className="flex items-center justify-between p-4 bg-surface-elevated/60 backdrop-blur-sm rounded-2xl border border-border/40 glass-subtle"
+      whileHover={{ scale: 1.01 }}
+      transition={{ duration: 0.2 }}
+    >
+      <div className="flex items-center space-x-3">
+        <Globe className="h-5 w-5 text-primary" />
+        <div className="flex items-center space-x-3">
+          <Checkbox
+            id="web-search"
+            checked={enabled}
+            onCheckedChange={onToggle}
+            className="data-[state=checked]:bg-primary data-[state=checked]:border-primary border-2 h-5 w-5"
+          />
+          <Label 
+            htmlFor="web-search" 
+            className="text-sm font-semibold cursor-pointer select-none"
+          >
+            Enable Web Search
+          </Label>
+        </div>
       </div>
       
-      {enabled && (
-        <div className="flex items-center text-xs text-muted-foreground bg-primary/10 px-2 py-1 rounded-md">
-          <Search className="h-3 w-3 mr-1" />
-          Web search active
-        </div>
-      )}
-    </div>
+      <motion.div
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ 
+          opacity: enabled ? 1 : 0, 
+          scale: enabled ? 1 : 0.8 
+        }}
+        transition={{ duration: 0.2 }}
+      >
+        {enabled && (
+          <div className="flex items-center text-sm text-primary bg-primary/10 px-3 py-1.5 rounded-xl border border-primary/20 font-medium">
+            <Search className="h-3 w-3 mr-2" />
+            Web search active
+          </div>
+        )}
+      </motion.div>
+    </motion.div>
   );
 };

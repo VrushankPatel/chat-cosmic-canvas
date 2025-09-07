@@ -2,139 +2,131 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ChatGPT-like UI Design System - Beautiful & Modern */
+/* Bifrost AI Design System - Professional Neutral Palette */
 
 @layer base {
   :root {
-    /* Core Colors - Light Mode */
-    --background: 0 0% 100%;
-    --foreground: 213 31% 9%;
+    /* Light Mode - Professional Neutral Palette */
+    --background: 0 0% 98%;          /* Soft White #FAFAFA */
+    --foreground: 0 0% 9%;           /* Near Black */
     
-    /* Chat Interface Colors */
-    --chat-background: 0 0% 100%;
-    --chat-surface: 0 0% 98%;
-    --user-message: 213 100% 50%;
+    /* Surfaces & Cards */
+    --surface: 240 5% 96%;           /* Cool Gray #F4F4F5 */
+    --surface-elevated: 0 0% 100%;   /* Pure White for elevated elements */
+    --surface-glass: 0 0% 98% / 0.8; /* Glassmorphism base */
+    
+    /* Chat Interface */
+    --chat-background: 0 0% 98%;
+    --user-message: 142 76% 36%;     /* Deep Green #2ecc71 */
     --user-message-foreground: 0 0% 100%;
-    --assistant-message: 0 0% 98%;
-    --assistant-message-foreground: 213 31% 9%;
+    --assistant-message: 0 0% 100%;
+    --assistant-message-foreground: 0 0% 9%;
     
-    /* Sidebar Colors */
-    --sidebar-background: 0 0% 98%;
-    --sidebar-surface: 0 0% 96%;
-    --sidebar-foreground: 213 31% 9%;
-    --sidebar-accent: 213 100% 50%;
+    /* Sidebar Glassmorphism */
+    --sidebar-background: 240 5% 96% / 0.85;
+    --sidebar-surface: 0 0% 100% / 0.6;
+    --sidebar-foreground: 0 0% 9%;
+    --sidebar-border: 0 0% 90% / 0.5;
     
     /* Interactive Elements */
-    --primary: 213 100% 50%;
+    --primary: 142 76% 36%;          /* Emerald Green */
     --primary-foreground: 0 0% 100%;
-    --secondary: 0 0% 96%;
-    --secondary-foreground: 213 31% 9%;
-    --accent: 213 100% 96%;
-    --accent-foreground: 213 100% 40%;
+    --secondary: 240 5% 94%;
+    --secondary-foreground: 0 0% 9%;
+    --accent: 35 91% 50%;            /* Warm Amber #f39c12 */
+    --accent-foreground: 0 0% 100%;
     
     /* Borders & Inputs */
     --border: 0 0% 90%;
-    --input: 0 0% 98%;
+    --input: 0 0% 100%;
     --input-border: 0 0% 88%;
-    --ring: 213 100% 50%;
+    --ring: 142 76% 36%;
     
-    /* Status Colors */
+    /* Status & Feedback */
     --success: 142 76% 36%;
     --success-foreground: 0 0% 100%;
-    --warning: 38 92% 50%;
+    --warning: 35 91% 50%;
     --warning-foreground: 0 0% 100%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
     
     /* Muted Elements */
-    --muted: 0 0% 96%;
+    --muted: 240 5% 94%;
     --muted-foreground: 0 0% 45%;
     
     /* Card & Popover */
     --card: 0 0% 100%;
-    --card-foreground: 213 31% 9%;
+    --card-foreground: 0 0% 9%;
     --popover: 0 0% 100%;
-    --popover-foreground: 213 31% 9%;
+    --popover-foreground: 0 0% 9%;
     
-    /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(213 100% 50%), hsl(213 100% 60%));
-    --gradient-surface: linear-gradient(180deg, hsl(0 0% 100%), hsl(0 0% 99%));
-    --gradient-chat: linear-gradient(180deg, hsl(0 0% 100%), hsl(0 0% 98%));
+    /* Glass Effects */
+    --glass-bg: 0 0% 100% / 0.7;
+    --glass-border: 0 0% 100% / 0.2;
+    --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
     
-    /* Shadows */
-    --shadow-sm: 0 1px 2px 0 hsl(213 31% 9% / 0.05);
-    --shadow-md: 0 4px 6px -1px hsl(213 31% 9% / 0.1), 0 2px 4px -1px hsl(213 31% 9% / 0.06);
-    --shadow-lg: 0 10px 15px -3px hsl(213 31% 9% / 0.1), 0 4px 6px -2px hsl(213 31% 9% / 0.05);
-    --shadow-xl: 0 20px 25px -5px hsl(213 31% 9% / 0.1), 0 10px 10px -5px hsl(213 31% 9% / 0.04);
-    
-    /* Animations */
-    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-    
-    --radius: 0.75rem;
+    --radius: 1rem;
   }
 
   .dark {
-    /* Core Colors - Dark Mode */
-    --background: 213 31% 9%;
-    --foreground: 0 0% 98%;
+    /* Dark Mode - Charcoal & Graphite Professional Palette */
+    --background: 0 0% 7%;           /* Charcoal #121212 */
+    --foreground: 0 0% 98%;          /* Near White */
     
-    /* Chat Interface Colors */
-    --chat-background: 213 31% 9%;
-    --chat-surface: 213 27% 12%;
-    --user-message: 213 100% 55%;
+    /* Surfaces & Cards */
+    --surface: 0 0% 12%;             /* Graphite Gray #1E1E1E */
+    --surface-elevated: 0 0% 15%;    /* Slightly elevated graphite */
+    --surface-glass: 0 0% 12% / 0.8; /* Glassmorphism base */
+    
+    /* Chat Interface */
+    --chat-background: 0 0% 7%;
+    --user-message: 142 76% 45%;     /* Brighter emerald for dark mode */
     --user-message-foreground: 0 0% 100%;
-    --assistant-message: 213 27% 15%;
+    --assistant-message: 0 0% 15%;
     --assistant-message-foreground: 0 0% 95%;
     
-    /* Sidebar Colors */
-    --sidebar-background: 213 31% 8%;
-    --sidebar-surface: 213 27% 11%;
+    /* Sidebar Glassmorphism */
+    --sidebar-background: 0 0% 12% / 0.85;
+    --sidebar-surface: 0 0% 15% / 0.6;
     --sidebar-foreground: 0 0% 90%;
-    --sidebar-accent: 213 100% 55%;
+    --sidebar-border: 0 0% 25% / 0.5;
     
     /* Interactive Elements */
-    --primary: 213 100% 55%;
+    --primary: 142 76% 45%;          /* Emerald Green - brighter for dark */
     --primary-foreground: 0 0% 100%;
-    --secondary: 213 27% 15%;
+    --secondary: 0 0% 15%;
     --secondary-foreground: 0 0% 95%;
-    --accent: 213 50% 20%;
-    --accent-foreground: 213 100% 70%;
+    --accent: 35 91% 55%;            /* Warm Amber - brighter for dark */
+    --accent-foreground: 0 0% 100%;
     
     /* Borders & Inputs */
-    --border: 213 20% 20%;
-    --input: 213 27% 12%;
-    --input-border: 213 20% 25%;
-    --ring: 213 100% 55%;
+    --border: 0 0% 25%;
+    --input: 0 0% 15%;
+    --input-border: 0 0% 30%;
+    --ring: 142 76% 45%;
     
-    /* Status Colors */
+    /* Status & Feedback */
     --success: 142 76% 45%;
     --success-foreground: 0 0% 100%;
-    --warning: 38 92% 55%;
+    --warning: 35 91% 55%;
     --warning-foreground: 0 0% 100%;
     --destructive: 0 84% 65%;
     --destructive-foreground: 0 0% 100%;
     
     /* Muted Elements */
-    --muted: 213 27% 15%;
+    --muted: 0 0% 15%;
     --muted-foreground: 0 0% 60%;
     
     /* Card & Popover */
-    --card: 213 27% 12%;
+    --card: 0 0% 15%;
     --card-foreground: 0 0% 95%;
-    --popover: 213 27% 12%;
+    --popover: 0 0% 15%;
     --popover-foreground: 0 0% 95%;
     
-    /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(213 100% 50%), hsl(213 100% 65%));
-    --gradient-surface: linear-gradient(180deg, hsl(213 27% 12%), hsl(213 31% 9%));
-    --gradient-chat: linear-gradient(180deg, hsl(213 31% 9%), hsl(213 27% 11%));
-    
-    /* Shadows */
-    --shadow-sm: 0 1px 2px 0 hsl(0 0% 0% / 0.3);
-    --shadow-md: 0 4px 6px -1px hsl(0 0% 0% / 0.4), 0 2px 4px -1px hsl(0 0% 0% / 0.2);
-    --shadow-lg: 0 10px 15px -3px hsl(0 0% 0% / 0.4), 0 4px 6px -2px hsl(0 0% 0% / 0.2);
-    --shadow-xl: 0 20px 25px -5px hsl(0 0% 0% / 0.5), 0 10px 10px -5px hsl(0 0% 0% / 0.1);
+    /* Glass Effects */
+    --glass-bg: 0 0% 15% / 0.7;
+    --glass-border: 0 0% 25% / 0.2;
+    --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.6);
   }
 }
 
@@ -144,6 +136,21 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-inter antialiased;
+  }
+  
+  /* Glass morphism utility classes */
+  .glass {
+    background: hsl(var(--glass-bg));
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid hsl(var(--glass-border));
+    box-shadow: var(--glass-shadow);
+  }
+  
+  .glass-subtle {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    background: hsl(var(--surface-glass));
   }
 }

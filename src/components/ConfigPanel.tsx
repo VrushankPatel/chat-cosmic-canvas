@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { X, Server, Zap, Settings2 } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
@@ -57,7 +58,7 @@ export const ConfigPanel: React.FC<ConfigPanelProps> = ({ isOpen, onClose }) => 
       defaultPort: 11434,
       url: 'https://ollama.ai',
       icon: <Server className="h-4 w-4" />,
-      color: 'bg-blue-500'
+      color: 'bg-emerald-500'
     },
     lmstudio: {
       name: 'LM Studio',
@@ -65,103 +66,122 @@ export const ConfigPanel: React.FC<ConfigPanelProps> = ({ isOpen, onClose }) => 
       defaultPort: 1234,
       url: 'https://lmstudio.ai',
       icon: <Zap className="h-4 w-4" />,
-      color: 'bg-purple-500'
+      color: 'bg-amber-500'
     }
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <Settings2 className="h-5 w-5" />
-            Backend Configuration
-          </DialogTitle>
-        </DialogHeader>
-        
-        <div className="space-y-6">
-          {/* Backend Type Selection */}
-          <div className="space-y-3">
-            <Label htmlFor="backend-type" className="text-sm font-medium">
-              Backend Type
-            </Label>
-            <Select
-              value={config.type}
-              onValueChange={handleBackendTypeChange}
+    <AnimatePresence>
+      {isOpen && (
+        <Dialog open={isOpen} onOpenChange={onClose}>
+          <DialogContent className="sm:max-w-md glass border-border/50 backdrop-blur-xl">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.2 }}
             >
-              <SelectTrigger>
-                <SelectValue placeholder="Select backend type" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="ollama">
-                  <div className="flex items-center gap-2">
-                    <div className={`w-2 h-2 rounded-full ${backendInfo.ollama.color}`} />
-                    Ollama
-                  </div>
-                </SelectItem>
-                <SelectItem value="lmstudio">
-                  <div className="flex items-center gap-2">
-                    <div className={`w-2 h-2 rounded-full ${backendInfo.lmstudio.color}`} />
-                    LM Studio
-                  </div>
-                </SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2 text-lg font-bold">
+                  <Settings2 className="h-5 w-5 text-primary" />
+                  Bifrost Configuration
+                </DialogTitle>
+              </DialogHeader>
+              
+              <div className="space-y-6 mt-6">
+                {/* Backend Type Selection */}
+                <div className="space-y-3">
+                  <Label htmlFor="backend-type" className="text-sm font-semibold">
+                    Backend Type
+                  </Label>
+                  <Select
+                    value={config.type}
+                    onValueChange={handleBackendTypeChange}
+                  >
+                    <SelectTrigger className="bg-surface-elevated/80 border-border/50">
+                      <SelectValue placeholder="Select backend type" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-surface-elevated/95 backdrop-blur-xl border-border/50">
+                      <SelectItem value="ollama">
+                        <div className="flex items-center gap-2">
+                          <div className={`w-2 h-2 rounded-full ${backendInfo.ollama.color}`} />
+                          Ollama
+                        </div>
+                      </SelectItem>
+                      <SelectItem value="lmstudio">
+                        <div className="flex items-center gap-2">
+                          <div className={`w-2 h-2 rounded-full ${backendInfo.lmstudio.color}`} />
+                          LM Studio
+                        </div>
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
 
-          {/* Backend Info Card */}
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="flex items-center gap-2 text-sm">
-                {backendInfo[config.type].icon}
-                {backendInfo[config.type].name}
-                <Badge variant="secondary" className="ml-auto">
-                  Port {config.port}
-                </Badge>
-              </CardTitle>
-              <CardDescription className="text-xs">
-                {backendInfo[config.type].description}
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="pt-0">
-              <div className="text-xs text-muted-foreground">
-                Default endpoint: <code className="bg-muted px-1 rounded">
-                  http://localhost:{config.port}
-                </code>
+                {/* Backend Info Card */}
+                <Card className="bg-surface-elevated/60 border-border/40 glass-subtle">
+                  <CardHeader className="pb-3">
+                    <CardTitle className="flex items-center gap-2 text-sm font-semibold">
+                      {backendInfo[config.type].icon}
+                      {backendInfo[config.type].name}
+                      <Badge variant="secondary" className="ml-auto bg-primary/10 text-primary border-primary/20">
+                        Port {config.port}
+                      </Badge>
+                    </CardTitle>
+                    <CardDescription className="text-xs font-medium">
+                      {backendInfo[config.type].description}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="pt-0">
+                    <div className="text-xs text-muted-foreground font-medium">
+                      Default endpoint: <code className="bg-muted/60 px-2 py-1 rounded border border-border/30 font-mono">
+                        http://localhost:{config.port}
+                      </code>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Port Configuration */}
+                <div className="space-y-2">
+                  <Label htmlFor="port" className="text-sm font-semibold">
+                    Port Number
+                  </Label>
+                  <Input
+                    id="port"
+                    type="number"
+                    value={config.port}
+                    onChange={(e) => setConfig({ ...config, port: parseInt(e.target.value) || 0 })}
+                    placeholder="Enter port number"
+                    min="1"
+                    max="65535"
+                    className="bg-surface-elevated/80 border-border/50 font-medium"
+                  />
+                  <p className="text-xs text-muted-foreground font-medium">
+                    Make sure your {backendInfo[config.type].name} server is running on this port.
+                  </p>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex justify-between gap-3 pt-2">
+                  <Button 
+                    variant="outline" 
+                    onClick={onClose} 
+                    className="flex-1 bg-surface-elevated/60 border-border/50 hover:bg-surface-elevated/80"
+                  >
+                    Cancel
+                  </Button>
+                  <Button 
+                    onClick={handleSave} 
+                    className="flex-1 bg-primary hover:bg-primary/90 font-semibold"
+                  >
+                    Save Configuration
+                  </Button>
+                </div>
               </div>
-            </CardContent>
-          </Card>
-
-          {/* Port Configuration */}
-          <div className="space-y-2">
-            <Label htmlFor="port" className="text-sm font-medium">
-              Port Number
-            </Label>
-            <Input
-              id="port"
-              type="number"
-              value={config.port}
-              onChange={(e) => setConfig({ ...config, port: parseInt(e.target.value) || 0 })}
-              placeholder="Enter port number"
-              min="1"
-              max="65535"
-            />
-            <p className="text-xs text-muted-foreground">
-              Make sure your {backendInfo[config.type].name} server is running on this port.
-            </p>
-          </div>
-
-          {/* Action Buttons */}
-          <div className="flex justify-between gap-3">
-            <Button variant="outline" onClick={onClose} className="flex-1">
-              Cancel
-            </Button>
-            <Button onClick={handleSave} className="flex-1">
-              Save Configuration
-            </Button>
-          </div>
-        </div>
-      </DialogContent>
-    </Dialog>
+            </motion.div>
+          </DialogContent>
+        </Dialog>
+      )}
+    </AnimatePresence>
   );
 };
